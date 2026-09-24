@@ -1,0 +1,446 @@
+
+                        <!DOCTYPE html>
+                        <html lang="en">
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+							<style>
+								body {
+									background-color: white; /* Ensure the iframe has a white background */
+								}
+
+								
+							</style>
+                        </head>
+                        <body>
+                            <!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧠 Lernkarten-Dashboard · KI-Digitalmanager</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(160deg, #f0f4fe 0%, #e4eaf5 100%);
+    min-height: 100vh;
+  }
+
+  /* ===== KOPF ===== */
+  .header {
+    background: linear-gradient(135deg, #0f1f3d 0%, #1d3b6e 50%, #2a5099 100%);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 80%, rgba(255,255,255,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .header h1 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header h1 span { color: #8ab4f8; }
+
+  .header p {
+    font-size: 1.05rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header .badge-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .badge {
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(4px);
+    padding: 0.35rem 1.2rem;
+    border-radius: 30px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* ===== RASTER ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 6px 24px rgba(15,31,61,0.06);
+    transition: transform 0.2s, box-shadow 0.25s;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #e6ecf7;
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(15,31,61,0.10);
+  }
+
+  .card-top {
+    padding: 1.5rem 1.5rem 0.8rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
+
+  .card-top .emoji-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    background: #f0f5ff;
+  }
+
+  .card-top .info {
+    flex: 1;
+  }
+
+  .card-top .info h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #0f1f3d;
+    line-height: 1.3;
+  }
+
+  .card-top .info .meta {
+    font-size: 0.82rem;
+    color: #6a7f9e;
+    margin-top: 0.2rem;
+  }
+
+  .card-body {
+    padding: 0.2rem 1.5rem 0.8rem;
+    flex: 1;
+  }
+
+  .card-body p {
+    font-size: 0.92rem;
+    color: #2c405e;
+    line-height: 1.6;
+  }
+
+  .card-body .tag {
+    display: inline-block;
+    background: #eef3fe;
+    color: #1d3b6e;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.7rem;
+    border-radius: 30px;
+    margin-top: 0.6rem;
+    margin-right: 0.25rem;
+  }
+
+  .card-footer {
+    padding: 0.8rem 1.5rem 1.2rem;
+    border-top: 1px solid #eef3fe;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .card-footer .status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.15rem 0.8rem;
+    border-radius: 30px;
+  }
+
+  .status.ready { background: #e3f2e9; color: #1a6d4c; }
+  .status.pending { background: #f5f0e0; color: #8a6d1a; }
+  .status.coming { background: #f0f2f5; color: #6a7f9e; }
+
+  .card-footer a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.88rem;
+    color: #1d3b6e;
+    padding: 0.4rem 1rem;
+    border-radius: 30px;
+    background: #f0f5ff;
+    transition: background 0.2s;
+  }
+
+  .card-footer a:hover {
+    background: #dce6fc;
+  }
+
+  .card-footer a.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+    background: #f0f2f5;
+    color: #6a7f9e;
+  }
+
+  /* ===== FUTURE ===== */
+  .future .emoji-box { background: #f0f2f5; color: #8a9bb8; }
+  .future .info h3 { color: #6a7f9e; }
+  .future .card-body p { color: #7b8db3; }
+
+  /* ===== SECTION ===== */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin: 2.5rem 0 1.2rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f1f3d;
+  }
+
+  .section-title .line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, #dce6fc, transparent);
+  }
+
+  /* ===== ANLEITUNG ===== */
+  .howto {
+    background: #fff;
+    border-radius: 24px;
+    padding: 2rem 2.2rem;
+    margin-top: 2.5rem;
+    border: 1px solid #e6ecf7;
+    box-shadow: 0 4px 16px rgba(15,31,61,0.04);
+  }
+
+  .howto h3 {
+    font-size: 1.1rem;
+    color: #0f1f3d;
+    margin-bottom: 0.8rem;
+  }
+
+  .howto ol {
+    padding-left: 1.5rem;
+    color: #2c405e;
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+
+  .howto ol li::marker { font-weight: 600; color: #1d3b6e; }
+
+  .howto code {
+    background: #eef3fe;
+    padding: 0.15rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.88rem;
+    color: #1d3b6e;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 1.7rem; }
+    .header { padding: 2rem 1rem 1.8rem; }
+    .grid { grid-template-columns: 1fr; }
+    .howto { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== KOPF ===== -->
+<div class="header">
+  <h1>🧠 Lernkarten-Dashboard</h1>
+  <p>Meine Reflexionen aus dem <span>KI-Digitalmanager</span>-Kurs – Modul für Modul</p>
+  <div class="badge-row">
+    <span class="badge">📅 24.09.2026</span>
+    <span class="badge">📍 Modul 1 · Tag 4</span>
+    <span class="badge">📂 gehostet auf GitHub Pages</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== AKTUELLES MODUL ===== -->
+  <div class="section-title">
+    <span>📌 Aktuelle Lernkarte</span>
+    <span class="line"></span>
+  </div>
+
+  <div class="grid">
+    <!-- Modul 1 – fertig -->
+    <div class="card">
+      <div class="card-top">
+        <div class="emoji-box">🚀</div>
+        <div class="info">
+          <h3>Digitale Transformation &amp; Fail-/Erfolgsanalyse</h3>
+          <div class="meta">Modul 1 · Tag 4 · 24.09.2026</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>KI halluziniert mehr als erwartet – kritisches Recherche-Bewusstsein geschärft. CMMI fühlt sich als Overkill an. Tannenhof gGmbH als strategische Pool-Wahl.</p>
+        <span class="tag">Aha: KI-Kritik</span>
+        <span class="tag">Skepsis: CMMI</span>
+        <span class="tag">Pool: Pflegeheim</span>
+      </div>
+      <div class="card-footer">
+        <span class="status ready">✅ Fertig</span>
+        <a href="modul1-tag4.html">Karte öffnen →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== KOMMENDE MODULE ===== -->
+  <div class="section-title" style="margin-top:3rem;">
+    <span>📚 Kommende Module</span>
+    <span class="line"></span>
+  </div>
+
+  <div class="grid">
+    <!-- Modul 2 -->
+    <div class="card future">
+      <div class="card-top">
+        <div class="emoji-box">🔜</div>
+        <div class="info">
+          <h3>Modul 2</h3>
+          <div class="meta">Noch nicht bearbeitet</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Hier wird deine nächste Lernreflexion eingetragen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="status coming">🕐 Ausstehend</span>
+        <a class="disabled">Karte öffnen →</a>
+      </div>
+    </div>
+
+    <!-- Modul 3 -->
+    <div class="card future">
+      <div class="card-top">
+        <div class="emoji-box">🔜</div>
+        <div class="info">
+          <h3>Modul 3</h3>
+          <div class="meta">Noch nicht bearbeitet</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Hier wird deine nächste Lernreflexion eingetragen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="status coming">🕐 Ausstehend</span>
+        <a class="disabled">Karte öffnen →</a>
+      </div>
+    </div>
+
+    <!-- Modul 4 -->
+    <div class="card future">
+      <div class="card-top">
+        <div class="emoji-box">🔜</div>
+        <div class="info">
+          <h3>Modul 4</h3>
+          <div class="meta">Noch nicht bearbeitet</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Hier wird deine nächste Lernreflexion eingetragen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="status coming">🕐 Ausstehend</span>
+        <a class="disabled">Karte öffnen →</a>
+      </div>
+    </div>
+
+    <!-- Modul 5 -->
+    <div class="card future">
+      <div class="card-top">
+        <div class="emoji-box">🔜</div>
+        <div class="info">
+          <h3>Modul 5</h3>
+          <div class="meta">Noch nicht bearbeitet</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Hier wird deine nächste Lernreflexion eingetragen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="status coming">🕐 Ausstehend</span>
+        <a class="disabled">Karte öffnen →</a>
+      </div>
+    </div>
+
+    <!-- Modul 6 -->
+    <div class="card future">
+      <div class="card-top">
+        <div class="emoji-box">🔜</div>
+        <div class="info">
+          <h3>Modul 6</h3>
+          <div class="meta">Noch nicht bearbeitet</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <p>Hier wird deine nächste Lernreflexion eingetragen.</p>
+      </div>
+      <div class="card-footer">
+        <span class="status coming">🕐 Ausstehend</span>
+        <a class="disabled">Karte öffnen →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ANLEITUNG ===== -->
+  <div class="howto">
+    <h3>📖 So verwendest du dieses Dashboard</h3>
+    <ol>
+      <li><strong>Speichern:</strong> Lade diese Datei als <code>index.html</code> in dein GitHub-Repository hoch (z. B. <code>mein-name.github.io/lernkarten/</code>).</li>
+      <li><strong>Erste Karte:</strong> Speichere die vorherige Lernkarte (<code>modul1-tag4.html</code>) <strong>im selben Ordner</strong> wie die <code>index.html</code>.</li>
+      <li><strong>Nächste Karte hinzufügen:</strong> Wenn du eine neue Lernreflexion erstellst, speichere sie als <code>modul2-tagX.html</code> im selben Ordner. Kopiere dann eine fertige Kachel (z. B. die von Modul 1), passe Titel, Pfad und Text an, und ersetze eine <code>future</code>-Kachel im Raster.</li>
+      <li><strong>GitHub Pages aktivieren:</strong> Gehe in deinem Repository auf <em>Settings → Pages</em> und wähle als Quelle <code>main</code> (bzw. <code>master</code>) und das Root-Verzeichnis. Schon ist dein Dashboard live unter <code>dein-name.github.io/REPOSITORY-NAME/</code>.</li>
+      <li><strong>Öffentlich oder privat:</strong> Funktioniert mit beiden – du entscheidest.</li>
+    </ol>
+  </div>
+
+</div>
+
+</body>
+</html>
+
+							<script>
+                            	
+							</script>
+                        </body>
+                        </html>
+                    
